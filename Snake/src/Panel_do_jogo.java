@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.xml.stream.FactoryConfigurationError;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -8,19 +7,18 @@ import java.util.Random;
 
 public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
 
-    public static int horizontal = 1000, vertical = 1000;
+    private static final int SIZE_FRUTA = 10;
+    private static int horizontal = 500, vertical = 500;
 
-    private int xcorpo = 10, ycorpo = 10, size = 5;
-
+    private int xCorpo = 10, yCorpo = 10, size = 5;
     private int ticks = 0;
-
-    private boolean direita = true,esquerda = false,cima = false,baixo = false;
-
+    private boolean DIREITA = true;
+    private boolean ESQUERDA = false;
+    private boolean CIMA = false;
+    private boolean BAIXO = false;
     private Random rand;
-
     private Corpo_cobra cobra_parametros;
     private Comida comida_parametros;
-
     private ArrayList<Corpo_cobra> cobra;
     private ArrayList<Comida> fruta;
 
@@ -28,27 +26,27 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
 
     private Thread thread;
 
-    public Panel_do_jogo(){
+    Panel_do_jogo(){
         setFocusable(true);
 
         setPreferredSize(new Dimension(horizontal,vertical));
         addKeyListener(this);
 
-        cobra = new ArrayList<Corpo_cobra>();
-        fruta = new ArrayList<Comida>();
+        cobra = new ArrayList<>();
+        fruta = new ArrayList<>();
 
         rand = new Random();
 
     }
 
 
-    public void começar(){
+    private void começar(){
         começar_jogo = true;
         thread = new Thread(this);
         thread.start();
     }
 
-    public void parar() throws InterruptedException {
+    private void parar() throws InterruptedException {
         começar_jogo = false;
         thread.join();
 
@@ -61,14 +59,14 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     public void corpo() throws InterruptedException {
 
         ticks++;
-        if (ticks > 250000){
-            if (direita) xcorpo++;
-            if (esquerda) xcorpo--;
-            if (baixo) ycorpo++;
-            if (cima) ycorpo--;
+        if (ticks > 999999){
+            if (DIREITA) xCorpo++;
+            if (ESQUERDA) xCorpo--;
+            if (BAIXO) yCorpo++;
+            if (CIMA) yCorpo--;
             ticks = 0;
 
-            cobra_parametros = new Corpo_cobra(xcorpo,ycorpo,20);
+            cobra_parametros = new Corpo_cobra(xCorpo, yCorpo,SIZE_FRUTA);
             cobra.add(cobra_parametros);
 
             if (cobra.size() > size){
@@ -79,22 +77,24 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
             int xfruta = rand.nextInt(49);
             int yfruta = rand.nextInt(49);
 
-            comida_parametros = new Comida(xfruta,yfruta,20);
+            comida_parametros = new Comida(xfruta,yfruta, SIZE_FRUTA);
             fruta.add(comida_parametros);
         }
         for (int i = 0; i < fruta.size();i++){
-            if (xcorpo == fruta.get(i).getXfruta() && ycorpo == fruta.get(i).getYfruta()){
+            if (xCorpo == fruta.get(i).getXfruta() && yCorpo == fruta.get(i).getYfruta()){
                 fruta.remove(i);
                 size += 3;
             }
         }
 
-        if (xcorpo == 50 || ycorpo == 50 || xcorpo < 0 || ycorpo < 0){
+        if (yCorpo == 50) {
+            parar();
+        } else if (xCorpo == 50 || xCorpo < 0 || yCorpo < 0) {
             parar();
         }
 
         for(int i = 0; i < cobra.size() - 1;i++){
-            if(cobra.get(i).getXcorpo() == xcorpo && cobra.get(i).getYcorpo() == ycorpo){
+            if(cobra.get(i).getXcorpo() == xCorpo && cobra.get(i).getYcorpo() == yCorpo){
                 parar();
             }
         }
@@ -110,13 +110,13 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         int fontSize = 20;
         g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
         g.setColor(Color.BLACK);
-        g.drawString("Placar : " + String.valueOf((size - 5)/3), horizontal/2, 20);
+        g.drawString("Placar : " + (size - 5) / 3, horizontal/2, 20);
 
-        for(int i = 0 ; i < cobra.size();i++){
-            cobra.get(i).desenhar(g);
+        for (Corpo_cobra corpo_cobra : cobra) {
+            corpo_cobra.desenhar(g);
         }
-        for(int i = 0 ; i < fruta.size();i++){
-            fruta.get(i).desenhar(g);
+        for (Comida comida : fruta) {
+            comida.desenhar(g);
         }
     }
 
@@ -139,26 +139,26 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(key == KeyEvent.VK_UP && !baixo){
-            cima = true;
-            direita = false;
-            esquerda = false;
+        if(key == KeyEvent.VK_UP && !BAIXO){
+            CIMA = true;
+            DIREITA = false;
+            ESQUERDA = false;
         }
-        if(key == KeyEvent.VK_RIGHT && !esquerda){
-            direita = true;
-            cima = false;
-            baixo = false;
+        if(key == KeyEvent.VK_RIGHT && !ESQUERDA){
+            DIREITA = true;
+            CIMA = false;
+            BAIXO = false;
 
         }
-        if(key == KeyEvent.VK_LEFT && !direita){
-            esquerda = true;
-            cima = false;
-            baixo = false;
+        if(key == KeyEvent.VK_LEFT && !DIREITA){
+            ESQUERDA = true;
+            CIMA = false;
+            BAIXO = false;
         }
-        if(key == KeyEvent.VK_DOWN && !cima){
-            baixo = true;
-            direita = false;
-            esquerda = false;
+        if(key == KeyEvent.VK_DOWN && !CIMA){
+            BAIXO = true;
+            DIREITA = false;
+            ESQUERDA = false;
         }
         if(key == KeyEvent.VK_SPACE){
             começar();

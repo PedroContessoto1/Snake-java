@@ -4,7 +4,7 @@ public class Corpo_cobra extends Panel_do_jogo {
 
     private int xcorpo, ycorpo, horizontal, vertical;
 
-    public Corpo_cobra(int xcorpo,int ycorpo,int size_cobra){
+    Corpo_cobra(int xcorpo, int ycorpo, int size_cobra){
         this.xcorpo = xcorpo;
         this.ycorpo = ycorpo;
         horizontal = size_cobra;
@@ -15,12 +15,12 @@ public class Corpo_cobra extends Panel_do_jogo {
 
     }
 
-    public void desenhar(Graphics g){
+    void desenhar(Graphics g){
         g.setColor(Color.BLUE);
         g.fillRect(xcorpo * horizontal,ycorpo * vertical,horizontal,vertical);
     }
 
-    public int getXcorpo() {
+    int getXcorpo() {
         return xcorpo;
     }
 
@@ -28,7 +28,7 @@ public class Corpo_cobra extends Panel_do_jogo {
         this.xcorpo = xcorpo;
     }
 
-    public int getYcorpo() {
+    int getYcorpo() {
         return ycorpo;
     }
 

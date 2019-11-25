@@ -1,10 +1,9 @@
 import javax.swing.*;
-import java.awt.*;
 
 
 public class Jogo {
 
-    public Jogo(){
+    private Jogo(){
         JFrame frame = new JFrame();
         Panel_do_jogo Panel = new Panel_do_jogo();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
