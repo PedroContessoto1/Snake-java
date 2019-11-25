@@ -18,7 +18,7 @@ public class Corpo_cobra extends Panel_do_jogo {
     void desenhar(Graphics g){
         g.setColor(Color.BLUE);
         g.fillRect(xcorpo * horizontal,ycorpo * vertical,horizontal,vertical);
-    }
+                                                                                                                                                                                                                    }
 
     int getXcorpo() {
         return xcorpo;

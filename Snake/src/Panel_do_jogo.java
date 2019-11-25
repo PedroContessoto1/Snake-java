@@ -16,9 +16,12 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     private boolean ESQUERDA = false;
     private boolean CIMA = false;
     private boolean BAIXO = false;
+
     private Random rand;
+
     private Corpo_cobra cobra_parametros;
     private Comida comida_parametros;
+
     private ArrayList<Corpo_cobra> cobra;
     private ArrayList<Comida> fruta;
 
@@ -57,7 +60,8 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     }
 
     public void corpo() throws InterruptedException {
-
+        //  bertho 999999
+        //  pedro 250000
         ticks++;
         if (ticks > 999999){
             if (DIREITA) xCorpo++;
@@ -112,11 +116,11 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.drawString("Placar : " + (size - 5) / 3, horizontal/2, 20);
 
-        for (Corpo_cobra corpo_cobra : cobra) {
-            corpo_cobra.desenhar(g);
+        for (int i = 0; i < cobra.size(); i++){
+            cobra.get(i).desenhar(g);
         }
-        for (Comida comida : fruta) {
-            comida.desenhar(g);
+        for (int k = 0; k < fruta.size(); k++){
+            fruta.get(k).desenhar(g);
         }
     }
 
