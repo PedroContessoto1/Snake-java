@@ -16,14 +16,18 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     private boolean ESQUERDA = false;
     private boolean CIMA = false;
     private boolean BAIXO = false;
+    int xfrutaAmarela;
+    int yfrutaAmarela;
 
     private Random rand;
 
     private Corpo_cobra cobra_parametros;
-    private Comida comida_parametros;
+    private FrutaVermelha frutaVermelha_parametros;
+    private FrutaAmarela frutaAmarela_parametros;
 
     private ArrayList<Corpo_cobra> cobra;
-    private ArrayList<Comida> fruta;
+    private ArrayList<FrutaVermelha> frutaVermelha;
+    private ArrayList<FrutaAmarela> frutaAmarela;
 
     private boolean começar_jogo;
 
@@ -36,7 +40,8 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         addKeyListener(this);
 
         cobra = new ArrayList<>();
-        fruta = new ArrayList<>();
+        frutaVermelha = new ArrayList<>();
+        frutaAmarela = new ArrayList<>();
 
         rand = new Random();
 
@@ -63,7 +68,7 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         //  bertho 999999
         //  pedro 250000
         ticks++;
-        if (ticks > 999999){
+        if (ticks > 699999){
             if (DIREITA) xCorpo++;
             if (ESQUERDA) xCorpo--;
             if (BAIXO) yCorpo++;
@@ -77,16 +82,36 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
                 cobra.remove(0);
             }
         }
-        if (fruta.size() == 0){
+        if (frutaVermelha.size() == 0){
             int xfruta = rand.nextInt(49);
             int yfruta = rand.nextInt(49);
 
-            comida_parametros = new Comida(xfruta,yfruta, SIZE_FRUTA);
-            fruta.add(comida_parametros);
+            frutaVermelha_parametros = new FrutaVermelha(xfruta,yfruta, SIZE_FRUTA);
+            frutaVermelha.add(frutaVermelha_parametros);
         }
-        for (int i = 0; i < fruta.size();i++){
-            if (xCorpo == fruta.get(i).getXfruta() && yCorpo == fruta.get(i).getYfruta()){
-                fruta.remove(i);
+
+        if (frutaAmarela.size() == 0){
+            xfrutaAmarela = rand.nextInt(49);
+            yfrutaAmarela = rand.nextInt(49);
+
+            frutaAmarela_parametros = new FrutaAmarela(xfrutaAmarela,yfrutaAmarela, SIZE_FRUTA);
+            frutaAmarela.add(frutaAmarela_parametros);
+
+        }
+
+
+
+
+        for (int i = 0; i < frutaVermelha.size(); i++){
+            if (xCorpo == frutaVermelha.get(i).getXfruta() && yCorpo == frutaVermelha.get(i).getYfruta()){
+                frutaVermelha.remove(i);
+                size += 3;
+            }
+        }
+
+        for (int i = 0; i < frutaAmarela.size(); i++){
+            if (xCorpo == frutaAmarela.get(i).getXfruta() && yCorpo == frutaAmarela.get(i).getYfruta()){
+                frutaAmarela.remove(i);
                 size += 3;
             }
         }
@@ -115,14 +140,18 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
         g.setColor(Color.BLACK);
         g.drawString("Placar : " + (size - 5) / 3, horizontal/2, 20);
-
         for (int i = 0; i < cobra.size(); i++){
             cobra.get(i).desenhar(g);
         }
-        for (int k = 0; k < fruta.size(); k++){
-            fruta.get(k).desenhar(g);
+        for (int k = 0; k < frutaVermelha.size(); k++){
+            frutaVermelha.get(k).desenhar(g);
         }
+        for (int k = 0; k < frutaAmarela.size(); k++){
+            frutaAmarela.get(k).desenhar(g);
+        }
+
     }
+
 
     public void run() {
         while(começar_jogo){
@@ -143,6 +172,7 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+
         if(key == KeyEvent.VK_UP && !BAIXO){
             CIMA = true;
             DIREITA = false;

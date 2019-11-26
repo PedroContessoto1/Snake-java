@@ -1,9 +1,9 @@
 import java.awt.*;
 
-public class Comida extends Panel_do_jogo{
+public class FrutaVermelha extends Panel_do_jogo {
     private int xfruta, yfruta, horizontal, vertical;
 
-    Comida(int xfruta, int yfruta, int size_fruta){
+    FrutaVermelha(int xfruta, int yfruta, int size_fruta){
         this.xfruta = xfruta;
         this.yfruta = yfruta;
         horizontal = size_fruta;
@@ -34,4 +34,5 @@ public class Comida extends Panel_do_jogo{
     public void setYfruta(int yfruta){
         this.yfruta = yfruta;
     }
+
 }
