@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class FrutaAmarela extends Panel_do_jogo {
+public class FrutaAmarela extends ItemJogo {
     private int xfruta, yfruta, horizontal, vertical;
 
     FrutaAmarela(int xfruta, int yfruta, int size_fruta){
@@ -10,14 +10,18 @@ public class FrutaAmarela extends Panel_do_jogo {
         vertical = size_fruta;
     }
 
-   public void corpo(){
+    public void desenhar(Graphics g){
 
-   }
-
-    void desenhar(Graphics g){
         g.setColor(Color.YELLOW);
         g.fillRect(xfruta * horizontal ,yfruta * vertical,horizontal,vertical);
-        movimento();
+
+    }
+
+    public void mover() {
+        xfruta+=1;
+        if (xfruta == 50){
+            xfruta =0;
+        }
 
     }
 
@@ -28,21 +32,6 @@ public class FrutaAmarela extends Panel_do_jogo {
     public void setXfruta(int xfruta){
 
         this.xfruta = xfruta;
-    }
-
-    private void movimento() {
-        boolean inverte = true;
-        if(inverte){
-            for (int x = 0; x < 1; x++){
-                this.xfruta += x;
-            }
-            inverte = false;
-        }else{
-            for (int x = 0; x < 1; x++){
-                this.xfruta += (x * -1);
-            }
-            inverte = true;
-        }
     }
 
     int getYfruta() {

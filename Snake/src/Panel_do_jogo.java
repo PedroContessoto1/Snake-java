@@ -16,8 +16,8 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
     private boolean ESQUERDA = false;
     private boolean CIMA = false;
     private boolean BAIXO = false;
-    int xfrutaAmarela;
-    int yfrutaAmarela;
+    private int xfrutaAmarela;
+    private int yfrutaAmarela;
 
     private Random rand;
 
@@ -44,7 +44,6 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         frutaAmarela = new ArrayList<>();
 
         rand = new Random();
-
     }
 
 
@@ -56,15 +55,12 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
 
     private void parar() throws InterruptedException {
         começar_jogo = false;
+        JOptionPane.showMessageDialog(null, "ACABOU SEUS PONTOS FORAM: " + (size - 5) / 3);
         thread.join();
 
     }
 
-    public void restart(){
-
-    }
-
-    public void corpo() throws InterruptedException {
+    private void corpo() throws FimDeJogo, InterruptedException {
         //  bertho 999999
         //  pedro 250000
         ticks++;
@@ -73,6 +69,15 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
             if (ESQUERDA) xCorpo--;
             if (BAIXO) yCorpo++;
             if (CIMA) yCorpo--;
+
+            for (FrutaAmarela amarela : frutaAmarela) {
+                amarela.mover();
+
+            }
+            for (FrutaVermelha verm : frutaVermelha) {
+                verm.mover();
+            }
+
             ticks = 0;
 
             cobra_parametros = new Corpo_cobra(xCorpo, yCorpo,SIZE_FRUTA);
@@ -101,7 +106,6 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
 
 
 
-
         for (int i = 0; i < frutaVermelha.size(); i++){
             if (xCorpo == frutaVermelha.get(i).getXfruta() && yCorpo == frutaVermelha.get(i).getYfruta()){
                 frutaVermelha.remove(i);
@@ -117,9 +121,13 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         }
 
         if (yCorpo == 50) {
-            parar();
+            System.out.println("end-game");
+//            parar();
+            throw new FimDeJogo();
         } else if (xCorpo == 50 || xCorpo < 0 || yCorpo < 0) {
-            parar();
+            System.out.println("end-game");
+//            parar();
+            throw new FimDeJogo();
         }
 
         for(int i = 0; i < cobra.size() - 1;i++){
@@ -146,8 +154,8 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         for (int k = 0; k < frutaVermelha.size(); k++){
             frutaVermelha.get(k).desenhar(g);
         }
-        for (int k = 0; k < frutaAmarela.size(); k++){
-            frutaAmarela.get(k).desenhar(g);
+        for (int w = 0; w < frutaAmarela.size(); w++){
+            frutaAmarela.get(w).desenhar(g);
         }
 
     }
@@ -157,8 +165,12 @@ public class Panel_do_jogo extends JPanel implements Runnable, KeyListener {
         while(começar_jogo){
             try {
                 corpo();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (FimDeJogo | InterruptedException e) {
+                try {
+                    parar();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
             }
             repaint();
         }

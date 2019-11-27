@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Corpo_cobra extends Panel_do_jogo {
+public class Corpo_cobra extends ItemJogo {
 
     private int xcorpo, ycorpo, horizontal, vertical;
 
@@ -11,11 +11,7 @@ public class Corpo_cobra extends Panel_do_jogo {
         vertical = size_cobra;
     }
 
-    public void corpo(){
-
-    }
-
-    void desenhar(Graphics g){
+    public void desenhar(Graphics g){
         g.setColor(Color.BLUE);
         g.fillRect(xcorpo * horizontal,ycorpo * vertical,horizontal,vertical);
                                                                                                                                                                                                                     }
